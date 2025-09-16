@@ -1,26 +1,19 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0.2",
+	"VersionName": "1.0.3",
 	"FriendlyName": "ProudNet",
-	"Description": "",
+	"Description": "This is an External plugin for Unreal Engine that integrates the ProudNet SDK and is configured to automatically link during build.",
 	"Category": "Nettention",
 	"CreatedBy": "Nettention",
 	"CreatedByURL": "https://proudnet.com/",
 	"DocsURL": "https://docs.nettention.com/proudnet",
 	"MarketplaceURL": "",
 	"SupportURL": "https://console.nettention.com/",
-	"EngineVersion": "5.5.0",
-	"CanContainContent": true,
+	"EngineVersion": "5",
+	"CanContainContent": false,
+	"CanContainNoCode": true,
 	"Installed": true,
-	"Modules": [
-		{
-			"Name": "ProudNet",
-			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"PlatformAllowList": [
-				"Win64"
-			]
-		}
-	]
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false
 }

@@ -1,5 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
+using System.Collections.Generic;
 using System.IO;
 using UnrealBuildTool;
 
@@ -7,9 +8,24 @@ public class ProudNet : ModuleRules
 {
 	public ProudNet(ReadOnlyTargetRules Target) : base(Target)
 	{
+        string pluginDir = Path.GetFullPath(Path.Combine(ModuleDirectory, "..", ".."));
+        string configPath = Path.Combine(pluginDir, "ProudNetBuild.ini");
+
+        var dict = new Dictionary<string, string>();
+        foreach (var raw in File.ReadAllLines(configPath))
+        {
+            var line = raw.Trim();
+            if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))
+                continue;
+
+            var kv = line.Split('=', 2);
+            if (kv.Length == 2)
+                dict[kv[0].Trim()] = kv[1].Trim();
+        }
+        string proudnetInstalledPath = dict.GetValueOrDefault("proudnet-sdk-path");
+
+
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-        string proudnet_installed_path = "C:/Program Files (x86)/Nettention/ProudNet";
-				
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
@@ -20,7 +36,7 @@ public class ProudNet : ModuleRules
 			}
 			);
 
-		PublicIncludePaths.AddRange(new string[] { Path.Combine(proudnet_installed_path, "include") });
+		PublicIncludePaths.AddRange(new string[] { Path.Combine(proudnetInstalledPath, "include") });
 		PublicIncludePaths.AddRange(new string[] { "ProudNet/Public" });
 		PrivateIncludePaths.AddRange(new string[] { "ProudNet/Private" });
 
@@ -32,13 +48,13 @@ public class ProudNet : ModuleRules
             bool useStaticCrt = false;
             if (useStaticCrt)
             {
-                string libPath = Path.Combine(proudnet_installed_path, "lib", "x64", "v140", "Release_static_CRT", "ProudNetClient.lib");
+                string libPath = Path.Combine(proudnetInstalledPath, "lib", "x64", "v140", "Release_static_CRT", "ProudNetClient.lib");
                 PublicAdditionalLibraries.Add(libPath);
             }
             else
             {
-                string libPath = Path.Combine(proudnet_installed_path, "lib", "x64", "v140", "Release", "ProudNetClient.lib");
-                string dllPath = Path.Combine(proudnet_installed_path, "lib", "x64", "dll", "Release", "ProudNetClient.dll");
+                string libPath = Path.Combine(proudnetInstalledPath, "lib", "x64", "v140", "Release", "ProudNetClient.lib");
+                string dllPath = Path.Combine(proudnetInstalledPath, "lib", "x64", "dll", "Release", "ProudNetClient.dll");
                 PublicAdditionalLibraries.Add(libPath);
                 RuntimeDependencies.Add("$(TargetOutputDir)/ProudNetClient.dll", dllPath, StagedFileType.NonUFS);
                 PublicDelayLoadDLLs.Add("ProudNetClient.dll");
@@ -46,17 +62,17 @@ public class ProudNet : ModuleRules
         }
         else if (Target.Platform == UnrealTargetPlatform.IOS)
         {
-            PublicAdditionalLibraries.Add(Path.Combine(proudnet_installed_path, "lib", "IOS", "LLVM", "arm64only", "Release", "libProudNetClient.a"));
+            PublicAdditionalLibraries.Add(Path.Combine(proudnetInstalledPath, "lib", "IOS", "LLVM", "arm64only", "Release", "libProudNetClient.a"));
             //IOS�� ��� libiconv.2.tbd ���̺귯���� ��θ� �߰������� ������ �־�� �մϴ�.(������ ���� ������ ���� �� iconv ���� ��ũ ���� �߻�)
-            PublicAdditionalLibraries.Add(Path.Combine(proudnet_installed_path, "lib", "IOS", "LLVM", "arm64only", "Release", "libiconv.2.tbd"));
+            PublicAdditionalLibraries.Add(Path.Combine(proudnetInstalledPath, "lib", "IOS", "LLVM", "arm64only", "Release", "libiconv.2.tbd"));
         }
         else if (Target.Platform == UnrealTargetPlatform.Android)
         {
-            PublicAdditionalLibraries.Add(Path.Combine(proudnet_installed_path, "lib", "NDK", "r20", "cmake", "clangRelease", "arm64-v8a", "libProudNetClient.a"));
+            PublicAdditionalLibraries.Add(Path.Combine(proudnetInstalledPath, "lib", "NDK", "r20", "cmake", "clangRelease", "arm64-v8a", "libProudNetClient.a"));
         }
         else if (Target.Platform == UnrealTargetPlatform.Linux)
         {
-            PublicAdditionalLibraries.Add(Path.Combine(proudnet_installed_path, "lib", "x86_x64-linux", "Release" , "libProudNetClient.a"));
+            PublicAdditionalLibraries.Add(Path.Combine(proudnetInstalledPath, "lib", "x86_x64-linux", "Release" , "libProudNetClient.a"));
         }
     }
 }
