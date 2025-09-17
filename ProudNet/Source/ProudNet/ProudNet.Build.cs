@@ -9,7 +9,7 @@ public class ProudNet : ModuleRules
 	public ProudNet(ReadOnlyTargetRules Target) : base(Target)
 	{
         string pluginDir = Path.GetFullPath(Path.Combine(ModuleDirectory, "..", ".."));
-        string configPath = Path.Combine(pluginDir, "ProudNetBuild.ini");
+        string configPath = Path.Combine(pluginDir, "ProudNet.ini");
 
         var dict = new Dictionary<string, string>();
         foreach (var raw in File.ReadAllLines(configPath))
