@@ -37,8 +37,6 @@ public class ProudNet : ModuleRules
 			);
 
 		PublicIncludePaths.AddRange(new string[] { Path.Combine(proudnetInstalledPath, "include") });
-		PublicIncludePaths.AddRange(new string[] { "ProudNet/Public" });
-		PrivateIncludePaths.AddRange(new string[] { "ProudNet/Private" });
 
 		if (Target.Platform == UnrealTargetPlatform.Win64)
         {
